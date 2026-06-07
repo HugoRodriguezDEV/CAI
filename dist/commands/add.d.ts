@@ -1,4 +1,5 @@
-type ResourceType = 'skill';
-export declare function addCommand(type: ResourceType, name: string, cwd: string): Promise<void>;
-export declare function listSkills(): Promise<string[]>;
+type Tool = 'claude' | 'gemini';
+type ResourceType = 'skill' | 'agent';
+export declare function addCommand(tool: Tool, type: ResourceType, name: string, cwd: string): Promise<void>;
+export declare function listResources(type: ResourceType): Promise<string[]>;
 export {};

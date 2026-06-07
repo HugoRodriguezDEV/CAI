@@ -15,21 +15,19 @@ export async function initCommand(tool, cwd) {
 }
 async function initClaude(templateDir, cwd) {
     const claudeDir = path.join(cwd, '.claude');
-    const commandsDir = path.join(claudeDir, 'commands');
-    await fs.mkdir(commandsDir, { recursive: true });
+    const skillsDir = path.join(claudeDir, 'skills');
+    await fs.mkdir(skillsDir, { recursive: true });
+    console.log(`  dir   .claude/skills/`);
     const claudeMdSrc = path.join(templateDir, 'CLAUDE.md');
     const claudeMdDest = path.join(cwd, 'CLAUDE.md');
     await copyIfNotExists(claudeMdSrc, claudeMdDest, 'CLAUDE.md');
-    const skillsDir = path.join(templateDir, 'skills');
-    const skills = await safeReadDir(skillsDir);
-    for (const skill of skills) {
-        const src = path.join(skillsDir, skill);
-        const dest = path.join(commandsDir, skill);
-        await copyIfNotExists(src, dest, `.claude/commands/${skill}`);
-    }
     console.log(`\nClaude initialized in ${cwd}`);
 }
 async function initGemini(templateDir, cwd) {
+    const geminiDir = path.join(cwd, '.gemini');
+    const skillsDir = path.join(geminiDir, 'skills');
+    await fs.mkdir(skillsDir, { recursive: true });
+    console.log(`  dir   .gemini/skills/`);
     const geminiMdSrc = path.join(templateDir, 'GEMINI.md');
     const geminiMdDest = path.join(cwd, 'GEMINI.md');
     await copyIfNotExists(geminiMdSrc, geminiMdDest, 'GEMINI.md');

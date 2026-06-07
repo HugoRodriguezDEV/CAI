@@ -10,7 +10,7 @@ program
     .version('1.0.0');
 program
     .command('init <tool>')
-    .description('Inicializa CLAUDE.md y skills en el proyecto actual (claude | gemini)')
+    .description('Inicializa CLAUDE.md / GEMINI.md y sus carpetas correspondientes (claude | gemini)')
     .action(async (tool) => {
     const valid = ['claude', 'gemini'];
     if (!valid.includes(tool)) {
@@ -20,15 +20,30 @@ program
     await initCommand(tool, process.cwd());
 });
 program
-    .command('add <type> <name>')
-    .description('Agrega un recurso individual al proyecto (tipo: skill)')
-    .action(async (type, name) => {
-    await addCommand(type, name, process.cwd());
+    .command('add <tool> <type> <name>')
+    .description('Agrega un recurso individual al proyecto (tool: claude|gemini, type: skill|agent, name: nombre)')
+    .action(async (tool, type, name) => {
+    const validTools = ['claude', 'gemini'];
+    if (!validTools.includes(tool)) {
+        console.error(`Tool "${tool}" not supported. Use: ${validTools.join(', ')}`);
+        process.exit(1);
+    }
+    const validTypes = ['skill', 'agent'];
+    if (!validTypes.includes(type)) {
+        console.error(`Type "${type}" not supported. Use: ${validTypes.join(', ')}`);
+        process.exit(1);
+    }
+    await addCommand(tool, type, name, process.cwd());
 });
 program
     .command('list <type>')
-    .description('Lista recursos disponibles (tipo: skills)')
+    .description('Lista recursos disponibles (skills | agents)')
     .action(async (type) => {
+    const validTypes = ['skills', 'agents'];
+    if (!validTypes.includes(type)) {
+        console.error(`Type "${type}" not supported. Use: ${validTypes.join(', ')}`);
+        process.exit(1);
+    }
     await listCommand(type);
 });
 program.parse(process.argv);
